@@ -74,13 +74,17 @@ public class InterpreterProvider {
 
   public String destroyRoom(String roomName) {
     if(!this.room.equals(roomName)){
-      this.log(this.user + " destroyed room " + roomName);
-      return (roomProvider.detroyRoom(roomName, this.user)) ? "Room " + roomName + " was Destroyed.":"Failed to destroy " + roomName + " room.";
+      if(roomProvider.detroyRoom(roomName, this.user)){
+        this.log(this.user + " destroyed room " + roomName);
+        return "Room " + roomName + " was Destroyed.";
+      }else {
+        this.log(this.user + " failed when try to destroy room " + roomName);
+        return "Failed to destroy " + roomName + " room.";
+      }
     }else{
       this.log(this.user + " try to destroy room " + roomName);
       return "You are inside the room " + roomName + ", get out of it and try to destroy it again.";
-    }
-    
+    } 
   }
 
   public String listUsers(String roomName) {

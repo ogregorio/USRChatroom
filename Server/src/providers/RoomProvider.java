@@ -26,8 +26,10 @@ public class RoomProvider {
     public boolean enterRoom(String roomName, String username) {
       if(rooms.containsKey(roomName)) {
         ArrayList<String> usernames = rooms.get(roomName);
-        usernames.add(username);
-        rooms.put(roomName, usernames);
+        if(!usernames.contains(username)) {
+          usernames.add(username);
+          rooms.put(roomName, usernames);
+        }
         return true;
       }else {
         return false;
