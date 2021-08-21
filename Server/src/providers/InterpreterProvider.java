@@ -1,32 +1,34 @@
 package providers;
 
+import java.net.Socket;
+
 public class InterpreterProvider {
   
-  HeaderProvider headerProvider;
-  RoomProvider roomProvider;
+  private UserProvider userProvider = new UserProvider();
+  private RoomProvider roomProvider = new RoomProvider();
+  private HeaderProvider headerProvider;
 
   String user;
   String room;
 
-  public String interpreter(String message) {
+  public String analyzer(String message, Socket socket) {
       try {
         this.headerProvider = new HeaderProvider(message);
       }catch (Exception e) {
         return "Bad request.";
       }
-      this.roomProvider = new RoomProvider();
       this.user = this.headerProvider.getUser();
       this.room = this.headerProvider.getRoom();
-      String result = this.analyzer(this.headerProvider.getMessage());
+      String result = this.interpreter(this.headerProvider.getMessage(), socket);
       this.headerProvider = new HeaderProvider(this.user, this.room, result);
       return this.headerProvider.toString();
   }
 
-  public String analyzer(String message) {
+  public String interpreter(String message, Socket socket) {
     String[] messageSplited = message.split(" ");
     try {
       switch (messageSplited[0]) {
-        case "/first_connection": return "FIRST_TIME_OF:" + this.user;
+        case "/first_connection": return createUser(this.user, socket);
         case "/create_room": return createRoom(messageSplited[1]);
         case "/enter_room": return enterRoom(messageSplited[1]);
         case "/destroy_room": return destroyRoom(messageSplited[1]);
@@ -34,7 +36,7 @@ public class InterpreterProvider {
         case "/list_all_rooms": return listAllRooms();
         case "/list_users": return listUsers(this.room);
         case "/exit_room": return exitRoom(messageSplited[1]);
-        case "/send_to": return send(messageSplited[1]);
+        case "/send": return send(messageSplited[1]);
         default: return "OOOPPS! COMMAND NOT RECOGINIZED!";
       }
     }catch(Exception e){
@@ -101,6 +103,12 @@ public class InterpreterProvider {
     this.log(this.user + " send a message to " + this.room);
     roomProvider.sendMessage(this.user, this.room, message);
     return message;
+  }
+
+  public String createUser(String user, Socket socket){
+    this.log(this.user + " was logged for the first time with socket adreess" + socket.getLocalAddress().toString());
+    userProvider.addUser(user, socket);
+    return "First login.";
   }
 
   public void log(String message) {
