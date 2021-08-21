@@ -37,7 +37,6 @@ public class ServerProvider {
         String inputLine;
         while ((inputLine = in.readLine()) != null) {
           String interpreted = new InterpreterProvider().analyzer(inputLine, clientSocket);
-          this.checkAccess(interpreted, clientSocket);
           out.println(interpreted);
         }
 
@@ -48,13 +47,6 @@ public class ServerProvider {
         e.printStackTrace();
       }
 
-    }
-
-    public void checkAccess(String interpreted, Socket socket) throws IOException {
-      String[] values = interpreted.split(":");
-      if(values[0].equals("FIRST_TIME_OF")){
-        
-      }
     }
   }
 

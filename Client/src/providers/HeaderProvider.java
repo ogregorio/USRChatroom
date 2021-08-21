@@ -1,6 +1,7 @@
 package providers;
 
 public class HeaderProvider {
+    Integer count;
     String user;
     String room;
     String message;
@@ -18,8 +19,13 @@ public class HeaderProvider {
         this.user = parts[0];
         this.room = parts[1];
         this.message = parts[2];
+        this.count = 0;
       } catch (Exception e) {
+        this.count++;
         System.out.println("An error occurred while parsing your message, try again, please!");
+        if(count == 5){
+          System.exit(1);
+        }
       }
     }
 

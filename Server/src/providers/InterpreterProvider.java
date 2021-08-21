@@ -41,7 +41,6 @@ public class InterpreterProvider {
       }
     }catch(Exception e){
       this.log(this.user + " try to launch a invalid command [" + message + "]");
-      e.printStackTrace();
       return "Ops! Command not recognized! Try again!";
     }
   }
