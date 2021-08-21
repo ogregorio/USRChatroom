@@ -22,10 +22,17 @@ public class ListenerProvider extends Thread {
 
     public void responseInterpreter(String response) {
       HeaderProvider headerProvider = new HeaderProvider(response);
-      if (this.user.equals(headerProvider.getUser())) {
-        System.out.println(headerProvider.getUser() + " -> " + headerProvider.getMessage());
+      this.syncWithServer(headerProvider);
+      if (!this.user.equalsIgnoreCase(headerProvider.getUser())) {
+        System.out.println(headerProvider.getUser() + " -> " + headerProvider.getCommand());
       } else {
-        System.out.println(this.user + " -> " + headerProvider.getMessage());
+        System.out.println(this.user + " -> " + headerProvider.getCommand());
+      }
+    }
+
+    public void syncWithServer(HeaderProvider header){
+      if(!header.getRoom().equalsIgnoreCase("null")){
+        GlobalStateProvider.setRoom(header.getRoom());
       }
     }
   }

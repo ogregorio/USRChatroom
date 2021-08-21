@@ -36,7 +36,7 @@ public class InterpreterProvider {
         case "/list_all_rooms": return listAllRooms();
         case "/list_users": return listUsers(this.room);
         case "/exit_room": return exitRoom(messageSplited[1]);
-        case "/send": return send(messageSplited[1]);
+        case "/send": return send(messageSplited);
         default: return "OOOPPS! COMMAND NOT RECOGINIZED!";
       }
     }catch(Exception e){
@@ -98,10 +98,14 @@ public class InterpreterProvider {
     return "Available rooms: " + roomProvider.listAllRooms();
   }
 
-  public String send(String message){
+  public String send(String[] message){
     this.log(this.user + " send a message to " + this.room);
-    roomProvider.sendMessage(this.user, this.room, message);
-    return message;
+    StringBuilder sb = new StringBuilder();
+    for(int i = 1; i < message.length; i++) {
+        sb.append(message[i]).append(" ");
+    }
+    roomProvider.sendMessage(this.user, this.room, sb.toString());
+    return "You sent a message to all in " + this.room;
   }
 
   public String createUser(String user, Socket socket){

@@ -1,16 +1,16 @@
 package providers;
 
 public class HeaderProvider {
-    Integer count;
-    String user;
-    String room;
-    String message;
-    String separator = "§";
+    private Integer count;
+    private String user;
+    private String room;
+    private String command;
+    private String separator = "§";
 
-    public HeaderProvider(String user, String room, String message) {
+    public HeaderProvider(String user, String room, String command) {
       this.user = user;
       this.room = room;
-      this.message = message;
+      this.command = command;
     }
 
     public HeaderProvider(String string) {
@@ -18,7 +18,7 @@ public class HeaderProvider {
         String[] parts = string.split(separator);
         this.user = parts[0];
         this.room = parts[1];
-        this.message = parts[2];
+        this.command = parts[2];
         this.count = 0;
       } catch (Exception e) {
         this.count++;
@@ -37,8 +37,8 @@ public class HeaderProvider {
       return this.room;
     }
 
-    public String getMessage() {
-      return this.message;
+    public String getCommand() {
+      return this.command;
     }
 
     @Override
@@ -48,7 +48,8 @@ public class HeaderProvider {
                 .append(this.separator)
                 .append(this.room)
                 .append(this.separator)
-                .append(this.message)
+                .append(this.command)
                 .toString();
     }
+    
 }
